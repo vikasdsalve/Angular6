@@ -144,6 +144,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Angular6"
+    }
+  },
+  "defaultProject": "Angular6",
+  "cli": {
+    "analytics": false
+  }
 }
