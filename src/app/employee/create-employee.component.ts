@@ -22,6 +22,18 @@ employeeForm: FormGroup;
     });
   }
 
+  onLoadDataClick(): void{
+    this.employeeForm.setValue({
+      fullName: 'Vikas Salve',
+      email: 'Vikas.dsalve@hotmail.com',
+      skills:{
+        skillName: 'C#',
+        experienceInYears: 5,
+        proficiency: 'beginner'
+      }
+    })
+  }
+
   onSubmit(): void{
     console.log(this.employeeForm.touched);
     console.log(this.employeeForm.value);
