@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-create-employee',
@@ -7,34 +7,34 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
-employeeForm: FormGroup;
-  constructor() { }
+  employeeForm: FormGroup;
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.employeeForm = new FormGroup({
-      fullName: new FormControl(),
-      email: new FormControl(),
-      skills: new FormGroup({
-        skillName: new FormControl(),
-        experienceInYears: new FormControl(),
-        proficiency: new FormControl()
+    this.employeeForm = this.fb.group({
+      fullName: [''],
+      email: [''],
+      skills: this.fb.group({
+        skillName: [''],
+        experienceInYears: [''],
+        proficiency: ['beginner']
       })
     });
   }
 
-  onLoadDataClick(): void{
+  onLoadDataClick(): void {
     this.employeeForm.setValue({
       fullName: 'Vikas Salve',
       email: 'Vikas.dsalve@hotmail.com',
-      skills:{
+      skills: {
         skillName: 'C#',
         experienceInYears: 5,
         proficiency: 'beginner'
       }
-    })
+    });
   }
 
-  onSubmit(): void{
+  onSubmit(): void {
     console.log(this.employeeForm.touched);
     console.log(this.employeeForm.value);
 
