@@ -18,7 +18,11 @@ employeeForm: FormGroup;
   }
 
   onSubmit(): void{
+    console.log(this.employeeForm.touched);
     console.log(this.employeeForm.value);
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
   }
 
 }
