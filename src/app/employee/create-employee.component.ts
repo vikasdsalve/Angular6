@@ -52,9 +52,13 @@ export class CreateEmployeeComponent implements OnInit {
         proficiency: ['', Validators.required]
       })
     });
+
+    this.employeeForm.valueChanges.subscribe((data) =>{
+      this.logValidationErrors(this.employeeForm);
+    });
 }
 
-logValidationErrors(group: FormGroup): void {
+logValidationErrors(group: FormGroup = this.employeeForm): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
       if (abstractControl instanceof FormGroup) {
@@ -64,7 +68,7 @@ logValidationErrors(group: FormGroup): void {
         // abstractControl.markAsDirty();
         // abstractControl.disable();
         this.formErrors[key] = '';
-        if (abstractControl && !abstractControl.valid){
+        if (abstractControl && !abstractControl.valid && (abstractControl.touched || abstractControl.dirty)){
           const message = this.validationMessages[key];
           console.log(message);
           for (const errorkey in abstractControl.errors){
@@ -78,8 +82,8 @@ logValidationErrors(group: FormGroup): void {
   }
 
 onLoadDataClick(): void {
- this.logValidationErrors(this.employeeForm);
- console.log(this.formErrors);
+//  this.logValidationErrors(this.employeeForm);
+//  console.log(this.formErrors);
 }
 
 onSubmit(): void {
