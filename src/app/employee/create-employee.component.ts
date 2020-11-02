@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
+
 @Component({
   selector: 'app-create-employee',
   templateUrl: './create-employee.component.html',
@@ -25,16 +26,21 @@ export class CreateEmployeeComponent implements OnInit {
     });
 }
 
+  logKeyValuePairs(group: FormGroup): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      if (abstractControl instanceof FormGroup) {
+        this.logKeyValuePairs(abstractControl);
+      } else {
+        console.log('Key = ' + key + ' && Value = ' + abstractControl.value);
+        // abstractControl.markAsDirty();
+        // abstractControl.disable();
+      }
+    });
+  }
+
 onLoadDataClick(): void {
-  this.employeeForm.setValue({
-    fullName: 'Vikas Salve',
-    email: 'Vikas.dsalve@hotmail.com',
-    skills: {
-      skillName: 'C#',
-      experienceInYears: 5,
-      proficiency: 'beginner'
-    }
-  });
+ this.logKeyValuePairs(this.employeeForm);
 }
 
 onSubmit(): void {
