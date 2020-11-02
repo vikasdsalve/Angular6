@@ -11,36 +11,75 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class CreateEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
-  fullNameLength = 0;
+
   constructor(private fb: FormBuilder) { }
+
+  formErrors = {
+    'fullName': '',
+    'email': '',
+    'skillName': '',
+    'experienceInYears': '',
+    'proficiency': ''
+  };
+
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.'
+    },
+    'skillName': {
+      'required': 'Skill Name is required.',
+    },
+    'experienceInYears': {
+      'required': 'Experience is required.',
+    },
+    'proficiency': {
+      'required': 'Proficiency is required.',
+    },
+  };
 
   ngOnInit(): void {
     this.employeeForm = this.fb.group({
       fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
-      email: [''],
+      email: ['', Validators.required],
       skills: this.fb.group({
-        skillName: [''],
-        experienceInYears: [''],
-        proficiency: ['beginner']
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
       })
     });
 }
 
-  logKeyValuePairs(group: FormGroup): void {
+logValidationErrors(group: FormGroup): void {
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
       if (abstractControl instanceof FormGroup) {
-        this.logKeyValuePairs(abstractControl);
+        this.logValidationErrors(abstractControl);
       } else {
-        console.log('Key = ' + key + ' && Value = ' + abstractControl.value);
+        // console.log('Key = ' + key + ' && Value = ' + abstractControl.value);
         // abstractControl.markAsDirty();
         // abstractControl.disable();
+        this.formErrors[key] = '';
+        if (abstractControl && !abstractControl.valid){
+          const message = this.validationMessages[key];
+          console.log(message);
+          for (const errorkey in abstractControl.errors){
+            if (errorkey){
+              this.formErrors[key] += message[errorkey] + ' ';
+            }
+          }
+        }
       }
     });
   }
 
 onLoadDataClick(): void {
- this.logKeyValuePairs(this.employeeForm);
+ this.logValidationErrors(this.employeeForm);
+ console.log(this.formErrors);
 }
 
 onSubmit(): void {
