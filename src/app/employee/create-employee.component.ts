@@ -59,7 +59,7 @@ export class CreateEmployeeComponent implements OnInit {
       })
     });
 
-    this.employeeForm.get('onContactPrefernceChange').valueChanges.subscribe((data: string) => {
+    this.employeeForm.get('contactPreference').valueChanges.subscribe((data: string) => {
       this.onContactPrefernceChange(data);
     });
 
@@ -72,6 +72,7 @@ export class CreateEmployeeComponent implements OnInit {
     const phoneControl = this.employeeForm.get('phone');
     if (selectValue === 'phone') {
       phoneControl.setValidators(Validators.required);
+      phoneControl.markAsTouched();
     } else {
       phoneControl.clearValidators();
     }
