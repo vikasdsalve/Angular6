@@ -64,11 +64,9 @@ export class CreateEmployeeComponent implements OnInit {
         confirmEmail: ['', Validators.required],
       }, { validators: matchEmails }),
       phone: [''],
-      skills: this.fb.group({
-        skillName: ['', Validators.required],
-        experienceInYears: ['', Validators.required],
-        proficiency: ['', Validators.required]
-      })
+      skills: this.fb.array([
+       this.addSkillFormGroup()
+      ])
     });
 
     this.employeeForm.get('contactPreference').valueChanges.subscribe((data: string) => {
@@ -79,6 +77,14 @@ export class CreateEmployeeComponent implements OnInit {
       this.logValidationErrors(this.employeeForm);
     });
   }
+
+    addSkillFormGroup(): FormGroup{
+      return this.fb.group({
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
+      })
+    }
 
   onContactPrefernceChange(selectValue: string) {
     const phoneControl = this.employeeForm.get('phone');
@@ -107,6 +113,13 @@ export class CreateEmployeeComponent implements OnInit {
       }
       if (abstractControl instanceof FormGroup) {
         this.logValidationErrors(abstractControl);
+      }
+      if (abstractControl instanceof FormArray) {
+        for (const control of abstractControl.controls ){
+            if (control instanceof FormGroup){
+              this.logValidationErrors(control);
+            }
+        }
       }
       // console.log('Key = ' + key + ' && Value = ' + abstractControl.value);
       // abstractControl.markAsDirty();
