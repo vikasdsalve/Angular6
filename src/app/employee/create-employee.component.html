@@ -68,7 +68,7 @@
             </button>
           </div>
         </div>
-      <div formArrayName="skills" *ngFor="let skill of employeeForm.get('skills').controls">
+      <div formArrayName="skills"  *ngFor="let skill of employeeForm.get('skills')['controls']"      >
         <div formGroupName="0">
       
           <div class="form-group" [ngClass]="{'has-error': formErrors.skillName}">
