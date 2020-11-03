@@ -61,7 +61,14 @@
       </div>
 
       <div class="well">
-      <div formArrayName="skills">
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-4">
+            <button type="button" class="btn btn-primary" (click)="addSkillButtonClick()">
+              Add Skill
+            </button>
+          </div>
+        </div>
+      <div formArrayName="skills" *ngFor="let skill of employeeForm.get('skills').controls">
         <div formGroupName="0">
       
           <div class="form-group" [ngClass]="{'has-error': formErrors.skillName}">
