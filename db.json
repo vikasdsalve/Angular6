@@ -42,6 +42,20 @@
           "proficiency": "advanced"
         }
       ]
+    },
+    {
+      "id": 3,
+      "fullName": "Vikas",
+      "contactPreference": "email",
+      "email": "vikas.dsalve@dell.com",
+      "phone": "9768985501",
+      "skills": [
+        {
+          "skillName": "C#",
+          "experienceInYears": "6",
+          "proficiency": "intermediate"
+        }
+      ]
     }
   ]
 }
