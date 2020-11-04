@@ -17,8 +17,8 @@ export class CreateEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-             private route: ActivatedRoute,
-             private employeeService: EmployeeService ) { }
+    private route: ActivatedRoute,
+    private employeeService: EmployeeService) { }
 
   formErrors = {
     'fullName': '',
@@ -62,7 +62,7 @@ export class CreateEmployeeComponent implements OnInit {
       }, { validators: matchEmails }),
       phone: [''],
       skills: this.fb.array([
-       this.addSkillFormGroup()
+        this.addSkillFormGroup()
       ])
     });
 
@@ -101,6 +101,20 @@ export class CreateEmployeeComponent implements OnInit {
       },
       phone: employee.phone
     });
+
+    this.employeeForm.setControl('skills', this.setExistingSkills(employee.skills));
+  }
+
+  setExistingSkills(skillSets: ISkill[]): FormArray {
+    const formArray = new FormArray([]);
+    skillSets.forEach(s => {
+      formArray.push(this.fb.group({
+        skillName: s.skillName,
+        experienceInYears: s.experienceInYears,
+        proficiency: s.proficiency
+      }));
+    });
+    return formArray;
   }
 
   addSkillButtonClick(): void {
@@ -108,15 +122,19 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   removeSkillButtonClick(skillGroupIndex: number): void {
-    (<FormArray>this.employeeForm.get('skills')).removeAt(skillGroupIndex);
+    const skillsFormArray = <FormArray>this.employeeForm.get('skills');
+    skillsFormArray.removeAt(skillGroupIndex);
+    skillsFormArray.markAsDirty();
+    skillsFormArray.markAsTouched();
   }
-    addSkillFormGroup(): FormGroup{
-      return this.fb.group({
-        skillName: ['', Validators.required],
-        experienceInYears: ['', Validators.required],
-        proficiency: ['', Validators.required]
-      })
-    }
+
+  addSkillFormGroup(): FormGroup {
+    return this.fb.group({
+      skillName: ['', Validators.required],
+      experienceInYears: ['', Validators.required],
+      proficiency: ['', Validators.required]
+    })
+  }
 
   onContactPrefernceChange(selectValue: string) {
     const phoneControl = this.employeeForm.get('phone');
