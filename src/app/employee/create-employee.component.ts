@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from './employee.service';
 import { IEmployee } from './IEmployee';
 import { ISkill } from './ISkill';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,10 +16,12 @@ import { ISkill } from './ISkill';
 })
 export class CreateEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
+  employee: IEmployee;
 
   constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
-    private employeeService: EmployeeService) { }
+    private employeeService: EmployeeService,
+    private router: Router) { }
 
   formErrors = {
     'fullName': '',
@@ -86,7 +89,10 @@ export class CreateEmployeeComponent implements OnInit {
   getEmployee(id: number) {
     this.employeeService.getEmployee(id)
       .subscribe(
-        (employee: IEmployee) => this.editEmployee(employee),
+        (employee: IEmployee) => {
+        this.editEmployee(employee);
+        this.employee = employee
+      },
         (err: any) => console.log(err)
       );
   }
@@ -190,11 +196,19 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.employeeForm.touched);
-    console.log(this.employeeForm.value);
+    this.mapFormValuesToEmployeeModel();
+    this.employeeService.updateEmployee(this.employee).subscribe(
+      () => this.router.navigate(['list']),
+      (err: any) => console.log(err)
+    );
+  }
 
-    console.log(this.employeeForm.controls.fullName.touched);
-    console.log(this.employeeForm.get('fullName').value);
+  mapFormValuesToEmployeeModel() {
+    this.employee.fullName = this.employeeForm.value.fullName;
+    this.employee.contactPreference = this.employeeForm.value.contactPreference;
+    this.employee.email = this.employeeForm.value.emailGroup.email;
+    this.employee.phone = this.employeeForm.value.phone;
+    this.employee.skills = this.employeeForm.value.skills;
   }
 
 }
