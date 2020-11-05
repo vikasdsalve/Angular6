@@ -2,7 +2,7 @@
   "employees": [
     {
       "id": 1,
-      "fullName": "Mark5",
+      "fullName": "Mark",
       "contactPreference": "phone",
       "email": "mark@dell.com",
       "phone": "5641238971",
@@ -54,6 +54,20 @@
           "skillName": "C#",
           "experienceInYears": "6",
           "proficiency": "intermediate"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "fullName": "shree",
+      "contactPreference": "email",
+      "email": "shree@dell.com",
+      "phone": "9768985501",
+      "skills": [
+        {
+          "skillName": "C#",
+          "experienceInYears": "6",
+          "proficiency": "beginner"
         }
       ]
     }
